@@ -1,8 +1,10 @@
-var mysql = require('mysql2');
-var connection = mysql.createPool({
-  host: 'rmcs.c3sevtfuia04.us-east-1.rds.amazonaws.com',
-  user: 'admin',
-  password: 'iqyD8QAgZTAs1jwf4MmD',
+let mysql = require('mysql2');
+let config = require('../../config');
+
+let connection = mysql.createPool({
+  host: config.mysql.host,
+  user: config.mysql.username,
+  password: config.mysql.password,
   database: 'library',
   multipleStatements: true
 });
