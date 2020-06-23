@@ -11,7 +11,7 @@ class Book {
         try {
 
             // fetch all books
-            let [rows] = await DB.query('select author, title, isbn, released_date from books where deleted_date is null');
+            let [rows] = await DB.query('select author, title, isbn, released_date from books');
             return rows;
 
         } catch(err) {
@@ -23,7 +23,7 @@ class Book {
         try {
 
             // fetch single data
-            let [rows] = await DB.query('select author, title, isbn, released_date from books where isbn = ? and deleted_date is null',[isbn]);
+            let [rows] = await DB.query('select author, title, isbn, released_date from books where isbn = ?',[isbn]);
             return rows;
 
         } catch(err) {
@@ -90,12 +90,8 @@ class Book {
     async delete(isbn) {
         try{
 
-            // get current date
-            let today = new Date();
-            today = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-
             // update deleted date with the current date
-            await DB.query('update books set deleted_date=? where isbn=?',[today, isbn]);
+            await DB.query('delete from books where isbn=?',[isbn]);
             return 'item removed';
 
         } catch(err) {
