@@ -15,7 +15,7 @@ class Book {
             return rows;
 
         } catch(err) {
-            return err.message;
+            return { error: err.message };
         }
     }
 
@@ -27,7 +27,7 @@ class Book {
             return rows;
 
         } catch(err) {
-            return err.message;
+            return { error: err.message };
         }
     }
 
@@ -55,7 +55,7 @@ class Book {
             return result;
 
         } catch(err) {
-            return err.message;
+            return { error: err.message };
         }
     }
 
@@ -83,7 +83,7 @@ class Book {
             return result;
 
         } catch(err) {
-            return err.message;
+            return { error: err.message };
         }
     }
 
@@ -99,7 +99,7 @@ class Book {
             return 'item removed';
 
         } catch(err) {
-            return err.message;
+            return { error: err.message };
         }
     }
 
