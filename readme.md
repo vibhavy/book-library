@@ -1,4 +1,4 @@
-# Book LIbrary
+# Book Library
 
 Demo code for the basic implementation of Book class in the Library.
 
