@@ -16,9 +16,9 @@ router.get('/', async function (req, res) {
 });
 
 // get single book from the library
-router.get('/:id', async function (req, res) {
+router.get('/:isbn', async function (req, res) {
 
-    let response = await book.single(req.params.id);
+    let response = await book.single(req.params.isbn);
     response = {
         data: response,
         code: 200,
@@ -36,15 +36,16 @@ router.post('/', async function (req, res) {
         data: response,
         code: 200,
     };
+
     res.setHeader('Content-Type', 'application/json')
     res.end(JSON.stringify(response));
 
 });
 
 // update single book from the library
-router.put('/:id', async function (req, res) {
+router.put('/:isbn', async function (req, res) {
 
-    let response = await book.update(req.params.id, req.body);
+    let response = await book.update(req.params.isbn, req.body);
     response = {
         data: response,
         code: 200,
@@ -55,9 +56,9 @@ router.put('/:id', async function (req, res) {
 });
 
 // delete single book from the library
-router.delete('/:id', async function (req, res) {
+router.delete('/:isbn', async function (req, res) {
 
-    let response = await book.delete(req.params.id);
+    let response = await book.delete(req.params.isbn);
     response = {
         data: response,
         code: 200,

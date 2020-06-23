@@ -11,95 +11,83 @@ class Book {
         try {
 
             // fetch all books
-            let [rows] = await DB.query('select ID, author, title, isbn, released_date from books where deleted_date is null');
+            let [rows] = await DB.query('select author, title, isbn, released_date from books where deleted_date is null');
             return rows;
 
         } catch(err) {
-            return [];
+            return err.message;
         }
     }
 
-    async single(id) {
+    async single(isbn) {
         try {
 
             // fetch single data
-            let [rows] = await DB.query('select ID, author, title, isbn, released_date from books where id = ? and deleted_date is null',[id]);
+            let [rows] = await DB.query('select author, title, isbn, released_date from books where isbn = ? and deleted_date is null',[isbn]);
             return rows;
 
         } catch(err) {
-            return [];
+            return err.message;
         }
     }
 
     async create(payload) {
         try{
 
-            // initialise empty response object
-            let res = {};
-
             // validate the payload
             if(!payload.author || payload.author.length === 0) {
-                res.error = 'author is required';
-                return res;
+                throw new Error('author is required')
             }
 
             // validate title
             if(!payload.title || payload.title.length === 0) {
-                res.error = 'title is required';
-                return res;
+                throw new Error('title is required')
             }
 
             // validate isbn
             if(!payload.isbn || payload.isbn.length === 0) {
-                res.error = 'isbn is required';
-                return res;
+                throw new Error('isbn is required');
             }
 
             // create new payload entry with payload dta
             let [result] = await DB.query('insert into books (author, title, isbn, released_date) values (?, ?, ?, ?)', [payload.author, payload.title, payload.isbn, payload.released_date]);
-            res = await this.single(result.insertId);
-            return res;
+            result = await this.single(payload.isbn);
+            return result;
 
         } catch(err) {
-            return [];
+            return err.message;
         }
     }
 
-    async update(id, payload) {
+    async update(isbn, payload) {
         try{
-
-            // initialise empty response object
-            let res = {};
 
             // validate the payload
             if(!payload.author || payload.author.length === 0) {
-                res.error = 'author is required';
-                return res;
+                throw new Error('author is required')
             }
 
             // validate title
             if(!payload.title || payload.title.length === 0) {
-                res.error = 'title is required';
-                return res;
+                throw new Error('title is required')
             }
 
             // validate isbn
             if(!payload.isbn || payload.isbn.length === 0) {
-                res.error = 'isbn is required';
-                return res;
+                throw new Error('isbn is required');
             }
 
             // update books with the payload data
-            await DB.query('update books set title=?, author=?, isbn=?, released_date=? where id=?',[payload.title, payload.author, payload.isbn, payload.released_date, id]);
-            res = await this.single(id);
-            return res;
+            await DB.query('update books set title=?, author=?, isbn=?, released_date=? where isbn=?',[payload.title, payload.author, payload.isbn, payload.released_date, isbn]);
+            let result = await this.single(payload.isbn);
+            return result;
 
         } catch(err) {
-            return [];
+            return err.message;
         }
     }
 
-    async delete(id) {
+    async delete(isbn) {
         try{
 
             // get current date
@@ -107,11 +95,11 @@ class Book {
             today = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
 
             // update deleted date with the current date
-            let [result] = await DB.query('update books set deleted_date=? where id=?',[today, id]);
-            return [];
+            await DB.query('update books set deleted_date=? where isbn=?',[today, isbn]);
+            return 'item removed';
 
         } catch(err) {
-            return [];
+            return err.message;
         }
     }
 
