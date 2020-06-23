@@ -16,4 +16,4 @@ var server = http.createServer(function(req, res) {
   router(req, res, finalhandler(req, res));
 })
  
-server.listen(process.env.PORT || 5000);
+server.listen(process.env.PORT || 3000);
