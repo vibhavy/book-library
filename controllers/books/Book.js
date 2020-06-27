@@ -80,6 +80,12 @@ class Book {
     async delete(isbn) {
         try{
 
+            // check if the isbn exists or not
+            let book = await this.single(isbn);
+            if(book.error) {
+                throw new Error(book.error);
+            }
+
             // update deleted date with the current date
             await DB.query('delete from books where isbn=?',[isbn]);
             return 'item removed';
