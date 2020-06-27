@@ -11,7 +11,7 @@ class Book {
         try {
 
             // fetch all books
-            let [rows] = await DB.query('select author, title, isbn, released_date from books');
+            let [rows] = await DB.query('select author, title, isbn, date_format(released_date,"%Y-%m-%d") as released_date from books');
             return rows;
 
         } catch(err) {
@@ -23,7 +23,7 @@ class Book {
         try {
 
             // fetch single data
-            let [rows] = await DB.query('select author, title, isbn, released_date from books where isbn = ?',[isbn]);
+            let [rows] = await DB.query('select author, title, isbn, date_format(released_date,"%Y-%m-%d") as released_date from books where isbn = ?',[isbn]);
             if(rows.length > 0) {
                 rows = rows[0];
                 return rows;
@@ -113,6 +113,15 @@ class Book {
             // validate isbn
             if(!payload.isbn || payload.isbn.length === 0)
                 errors.push('isbn is required');
+
+            // validate released_date if present
+            if(payload.released_date && payload.released_date.length > 0) {
+                let date = payload.released_date;
+                let dateArr = date.split('-');
+                if(dateArr.length === 0 || date.length < 10) {
+                    errors.push('invalid date format for released_date, required format(Y-m-d)');
+                }
+            }
 
         } catch (err) {
             errors.push(err.message);
