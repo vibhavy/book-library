@@ -2,6 +2,18 @@
 
 Demo code for the basic implementation of Book class in the Library.
 
+## Setup Config File
+
+```Javascript
+module.exports = {
+    mysql: {
+        host: '<host name>',
+        username: '<user>',
+        password: '<password>'
+    }
+};
+```
+
 ## Installation
 
 Once cloned the project, use below code to install all the dependencies.
