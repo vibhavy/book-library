@@ -65,8 +65,8 @@ describe("Books", function(){
     .end((err, result)=>{                    
         result.should.have.status(200)       
         console.log(result.body.data);         
-        result.body.data[0].isbn.should.eq(ISBN)
-        result.body.data[0].author.should.eq("monk")
+        result.body.data.isbn.should.eq(ISBN)
+        result.body.data.author.should.eq("monk")
         console.log(`Fetched Particlar Book with ISBN: ${ISBN}`, result.body)    
         done()
     })

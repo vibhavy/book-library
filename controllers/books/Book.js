@@ -24,7 +24,13 @@ class Book {
 
             // fetch single data
             let [rows] = await DB.query('select author, title, isbn, released_date from books where isbn = ?',[isbn]);
-            return rows;
+            if(rows.length > 0) {
+                rows = rows[0];
+                return rows;
+            }
+
+            // when no result is found
+            throw new Error('unknown ISBN provided');
 
         } catch(err) {
             return { error: err.message };
