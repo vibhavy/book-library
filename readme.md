@@ -26,12 +26,12 @@ CREATE TABLE  IF NOT EXISTS library.books (
   `created_date` date NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`ID`),
   UNIQUE KEY `isbn_unique` (`isbn`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ```
 
 ## Setup Config File
 
-Create config.js file in the root on the project with below given parameters.
+Create **config.js** file in the root on the project with below given parameters.
 
 ```Javascript
 module.exports = {
