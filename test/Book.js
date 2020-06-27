@@ -66,7 +66,7 @@ describe("Books", function(){
     .get(baseUrl)
     .end((err, result)=>{
         result.body.code.should.eq(200);
-        console.log ("Got",result.body.data.length, " docs");
+        console.log ("Got",result.body.data.length, "docs");
         done();
     });
   });
@@ -76,6 +76,9 @@ describe("Books", function(){
     .get(`${baseUrl}/${ISBN}`)
     .end((err, result)=>{                
         result.body.code.should.eq(200);
+        result.body.data.author.should.eq("Vibhav Yadav");
+        result.body.data.title.should.eq("let me code you");
+        result.body.data.released_date.should.eq("2020-10-02");
         console.log(`Fetched Particlar Book with ISBN: ${ISBN}`, result.body.data);
         done();
     });
