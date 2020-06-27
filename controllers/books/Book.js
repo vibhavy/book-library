@@ -41,20 +41,10 @@ class Book {
         try{
 
             // validate the payload
-            if(!payload.author || payload.author.length === 0) {
-                throw new Error('author is required')
-            }
-
-            // validate title
-            if(!payload.title || payload.title.length === 0) {
-                throw new Error('title is required')
-            }
-
-            // validate isbn
-            if(!payload.isbn || payload.isbn.length === 0) {
-                throw new Error('isbn is required');
-            }
-
+            let validate = this.validation(payload);
+            if(validate.error.length > 0)
+                return { error: validate.error };
+           
             // create new payload entry with payload dta
             let [result] = await DB.query('insert into books (author, title, isbn, released_date) values (?, ?, ?, ?)', [payload.author, payload.title, payload.isbn, payload.released_date]);
             result = await this.single(payload.isbn);
@@ -69,20 +59,10 @@ class Book {
         try{
 
             // validate the payload
-            if(!payload.author || payload.author.length === 0) {
-                throw new Error('author is required')
-            }
-
-            // validate title
-            if(!payload.title || payload.title.length === 0) {
-                throw new Error('title is required')
-            }
-
-            // validate isbn
-            if(!payload.isbn || payload.isbn.length === 0) {
-                throw new Error('isbn is required');
-            }
-
+            let validate = this.validation(payload);
+            if(validate.error.length > 0)
+                return { error: validate.error };
+    
             // update books with the payload data
             await DB.query('update books set title=?, author=?, isbn=?, released_date=? where isbn=?',[payload.title, payload.author, payload.isbn, payload.released_date, isbn]);
             let result = await this.single(payload.isbn);
@@ -103,6 +83,34 @@ class Book {
         } catch(err) {
             return { error: err.message };
         }
+    }
+
+    validation(payload) {
+
+        // initialize error array
+        let errors = [];
+
+        try {
+
+            // validate the payload
+            if(!payload.author || payload.author.length === 0)
+                errors.push('author is required');
+
+            // validate title
+            if(!payload.title || payload.title.length === 0)
+                errors.push('title is required');
+
+            // validate isbn
+            if(!payload.isbn || payload.isbn.length === 0)
+                errors.push('isbn is required');
+
+        } catch (err) {
+            errors.push(err.message);
+        }
+    
+        // return errror
+        return { error: errors }
+
     }
 
 }
