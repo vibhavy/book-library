@@ -46,9 +46,8 @@ class Book {
                 return { error: validate.error };
            
             // create new payload entry with payload dta
-            let [result] = await DB.query('insert into books (author, title, isbn, released_date) values (?, ?, ?, ?)', [payload.author, payload.title, payload.isbn, payload.released_date]);
-            result = await this.single(payload.isbn);
-            return result;
+            await DB.query('insert into books (author, title, isbn, released_date) values (?, ?, ?, ?)', [payload.author, payload.title, payload.isbn, payload.released_date]);
+            return 'item added';
 
         } catch(err) {
             return { error: err.message };
@@ -58,6 +57,12 @@ class Book {
     async update(isbn, payload) {
         try{
 
+            // check if the isbn exists or not
+            let book = await this.single(isbn);
+            if(book.error) {
+                throw new Error(book.error);
+            }
+
             // validate the payload
             let validate = this.validation(payload);
             if(validate.error.length > 0)
@@ -65,8 +70,7 @@ class Book {
     
             // update books with the payload data
             await DB.query('update books set title=?, author=?, isbn=?, released_date=? where isbn=?',[payload.title, payload.author, payload.isbn, payload.released_date, isbn]);
-            let result = await this.single(payload.isbn);
-            return result;
+            return 'item updated';
 
         } catch(err) {
             return { error: err.message };

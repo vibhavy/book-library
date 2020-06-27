@@ -2,6 +2,8 @@ let Router = require('router');
 let router = Router();
 let book = require('./Book');
 
+
+
 // get all books from the library 
 router.get('/', async function (req, res) {
 
@@ -10,6 +12,10 @@ router.get('/', async function (req, res) {
         data: response,
         code: 200,
     };
+
+    if(response.data.error)
+        response.code = 400;
+
     res.setHeader('Content-Type', 'application/json')
     res.end(JSON.stringify(response));
 
@@ -23,6 +29,10 @@ router.get('/:isbn', async function (req, res) {
         data: response,
         code: 200,
     };
+
+    if(response.data.error)
+        response.code = 400;
+
     res.setHeader('Content-Type', 'application/json')
     res.end(JSON.stringify(response));
 
@@ -34,8 +44,11 @@ router.post('/', async function (req, res) {
     let response = await book.create(req.body);
     response = {
         data: response,
-        code: 200,
+        code: 201,
     };
+
+    if(response.data.error)
+        response.code = 400;
 
     res.setHeader('Content-Type', 'application/json')
     res.end(JSON.stringify(response));
@@ -48,8 +61,12 @@ router.put('/:isbn', async function (req, res) {
     let response = await book.update(req.params.isbn, req.body);
     response = {
         data: response,
-        code: 200,
+        code: 201,
     };
+
+    if(response.data.error)
+        response.code = 400;
+
     res.setHeader('Content-Type', 'application/json')
     res.end(JSON.stringify(response));
 
@@ -63,6 +80,10 @@ router.delete('/:isbn', async function (req, res) {
         data: response,
         code: 200,
     };
+
+    if(response.data.error)
+        response.code = 400;
+
     res.setHeader('Content-Type', 'application/json')
     res.end(JSON.stringify(response));
 
