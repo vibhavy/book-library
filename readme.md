@@ -4,6 +4,8 @@ Demo code for the basic implementation of Book class in the Library.
 
 ## Setup Config File
 
+Create config.js file in the root on the project with below given parameters.
+
 ```Javascript
 module.exports = {
     mysql: {
