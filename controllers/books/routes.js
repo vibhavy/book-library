@@ -5,7 +5,7 @@ let book = require('./Book');
 // get all books from the library 
 router.get('/', async function (req, res) {
 
-    let response = await book.all(req);
+    let response = await book.all();
     response = {
         data: response,
         code: 200,
